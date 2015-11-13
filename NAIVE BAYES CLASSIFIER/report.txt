@@ -1,0 +1,188 @@
+CSCI 544 Applied NLP: Homework 2
+
+Bitbucket project name = csci544-hw2
+
+
+Question 1) For 75/25 split report the precision, recall and F1 score for SPAM, HAM, POSITIVE and NEGATIVE for the three machine learning techniques. Answer the following questions: In each case, which technique performs best? Based on class discussions, why do think this is? How does performance differ between SPAM detection and sentiment analysis (POSITIVE v. NEGATIVE)?
+Analysis:
+			For HAM SPAM data set:
+				For HAM
+				i) Naive Bayes: Recall : 98.31	Precision :	98.46	F1 Score : 98.38
+				ii) SVM:		Recall : 92.56	Precision :	99.25	F1 Score : 95.79
+				iii) Megam:		Recall : 92.09	Precision :	97.59	F1 Score : 94.76
+
+				For SPAM
+				i) Naive Bayes:	Recall : 98.51	Precision :	98.37	F1 Score : 98.44
+				ii) SVM:		Recall : 99.32	Precision :	93.24	F1 Score : 96.18
+				iii) Megam:		Recall : 97.73	Precision :	92.53	F1 Score : 95.60
+
+
+			For NEGATIVE POSITIVE data set:
+				For Negative
+				i) Naive Bayes:	Recall : 87.14	Precision :	82.82	F1 Score : 84.93
+				ii) SVM:		Recall : 84.64	Precision :	88.07	F1 Score : 86.32
+				iii) Megam:		Recall : 86.86	Precision :	88.63	F1 Score : 87.35
+
+				For Positive
+				i) Naive Bayes:	Recall : 81.45	Precision :	86.05	F1 Score : 83.69
+				ii) SVM:		Recall : 88.22	Precision :	84.84	F1 Score : 86.50
+				iii) Megam:		Recall : 88.27	Precision :	86.45	F1 Score : 87.35
+
+			For the HAM/SPAM data set, NAIVE BAYES performs the best. 
+			For Negative/Positive data set, MegaM performs the best. 
+
+			NAIVE BAYES performs better in case of Spam filtering because a mail is classfied as spam based on the frequency of spam words in it and also the probabilities are calculated independent of each word. Hence, spam filtering works best for Naive Bayes.
+
+			For sentiment analysis, it is necessary to calculate the probabilites of documents by making words dependent on each other. This is calculated correctly by MegaM nd hence the higher FScore for megaM.
+
+			There is a huge difference in the performance between Spam Detection and sentiment analysis. Spam detection performs much better because the features used to identify a mail as spam is very specific, unlike sentiment analysis, wherein the words used to classify a mail as negative/positive are quite generic and are very dependent on each other. So there is a higher probablilty of classifying a spam/ham email correctly than a sentiment.
+				
+Question 2) For 25/75 Report the precision, recall and F1 score for SPAM, HAM, POSITIVE and NEGATIVE for the three machine learning techniques. Answer the following questions: How much did performance drop for each of the machine learning techniques? Were some machine learning techniques more robust given a smaller training set? Is there a difference between SPAM detection and sentiment analysis?
+Analysis:
+			For HAM SPAM data set:
+				For HAM
+				i) Naive Bayes: Recall : 97.79	Precision :	98.14	F1 Score : 97.97
+				ii) SVM:		Recall : 90.03	Precision :	98.83	F1 Score : 94.23
+				iii) Megam:		Recall : 97.23	Precision :	98.90	F1 Score : 98.06
+
+				For SPAM
+				i) Naive Bayes:	Recall : 98.17	Precision :	97.81	F1 Score : 97.94
+				ii) SVM:		Recall : 98.94	Precision :	90.92	F1 Score : 94.76
+				iii) Megam:		Recall : 98.94	Precision :	97.32	F1 Score : 98.12
+
+
+			For NEGATIVE POSITIVE data set:
+				For NEGATIVE
+				i) Naive Bayes:	Recall : 86.48	Precision :	81.62	F1 Score : 83.98
+				ii) SVM:		Recall : 81.49	Precision :	85.72	F1 Score : 83.55
+				iii) Megam:		Recall : 84.55	Precision :	86.40	F1 Score : 85.47
+
+				For POSITIVE
+				i) Naive Bayes:	Recall : 80.59	Precision :	85.67	F1 Score : 83.05
+				ii) SVM:		Recall : 86.47	Precision :	82.41	F1 Score : 84.39
+				iii) Megam:		Recall : 86.73	Precision :	84.92	F1 Score : 85.82
+
+		Performance dropped by 1%(SPAM/Sentiment) for Naive Bayes, 2% for SVM(SPAM/Sentiment) and  by 2%(Sentiment) for MegaM and increases by almost 3-4% for SPAM detection in megaM . MegaM perfomred better for a smaller data set because Naive Bayes calculates each feature independent of each other, whereas in maximum entropy model each feature is given a weight, and hence can estimate the classification correctly. 
+		There is a major difference between SPAM detection and sentiment analysis. The FScore drops more for Sentiment analysis than Spam detection.
+
+
+Documentation for Input/Output Script files:
+
+
+preprocessor_incrementfeature.py
+=================================
+Commana Line Arg : Inputfile
+Adds 1 to the feature_name token so that the feature_names are read correctly by SVM
+	The original file will contain feature_names starting from 0
+	New file will have feature_names starting from 1
+	This program is used only for Sentiment data.
+
+preprocessor_increasingorder_svm.py
+=====================================
+Command line Arg: Inputfile
+This program is used to sort the feature names within the training/testing file in increasing order.
+
+
+preprocessor_combine_emailfiles.py
+==================================
+Command Line Argument : OutputFile VocabularyFile Inputfile/Inputfiles
+This script combines multiple files from a folder into a single file with labelled data. If there is a single inputfile mentioned, then the command is assumed to be running for testing data and hence no labels are appended to the data files.
+If there are more than one Inputfiles mentioned, then the command is assumed for training data and hence specific folder labels are appended as the labels for the documents.
+
+
+
+preprocessor_split_file.py 
+===========================
+Command Line Arguments : InputFile SplitPercentage OutputFile1 OutputFile2 email|sentiment
+This script splits the labelled data file into two parts based on the split percentage. The two output files are stored in the coresponding file names mentioned.
+The last argument for email|sentiment is taken so that essential classes for sentiment data file are added( >= 7 --> positive, <=4 --> negative ) 
+
+postprocessing_f1score.py
+=========================
+Command Line Arguments : classified_output.txt development_filename classname1 classname2 
+This script calculates the recall, precision and F1 score of the classified data. 
+development_filename is the file used for classifying the documents.
+classname1 corresponds to either positive or spam
+classname2 corresponds to either negative or ham
+
+
+postprocessing_svm_output.py
+============================
+Command Line Arguments : InputFile  sentiment|email
+converts the svm output file to have clssnames of positive or spam for values > 0 and negative or ham for values < 0
+
+postprocessing_megam_output.py
+==============================
+Command Line Arguments : InputFile  sentiment|email
+converts the megaM output file to have clssnames of positive or spam for values > 1 and negative or ham for values < 1
+
+convertdata-svm-megaM.py
+=========================
+Command Line Arguments : inputfilename outputfilename megaM|svm
+
+This script is used to convert the training data files into correct format for input into SVM or megaM. 
+classnames with ham/negative will be converted to -1 for svm and 0 for megaM
+classnames with spam/positive will be converted to 1 for svm and 1 for megaM
+
+
+preprocessing-addlabels-testdata.py
+===================================
+Command Line Arguments : inputfilename 
+
+This script is used to add labels to the Test data file. It adds 1 to all the lines irrespective of the data file.
+
+nbclassify
+=========
+
+outputs a file called classified_output.txt which contains the classified labels.
+
+
+Steps to run the code for preprocessing :
+ 
+SENTIMENT ANALYSIS - NAIVE BAYES - 75/25 SPLIT
+
+1.	python3 preprocessor_split_file.py labeledBow.feat 75 senti_training.txt senti_develpmet.txt sentiment
+2.	python3 nblearn.py senti_training.txt model_senti.txt
+3.	 python3 nbclassify.py model_senti.txt senti_develpmet.txt
+4.	 python3 postprocessing_f1score.py classified_output.txt senti_develpmet.txt positive negative
+
+SENTIMENT ANALYSIS - SVM- 75/25 SPLIT
+1.	convertdata-svm-megaM.py senti_develpmet.txt senti_dev_svm.txt svm
+2.	convertdata-svm-megaM.py senti_training.txt senti_training_svm.txt svm
+3.	./svm_learn senti_training_svm.txt sentiment.svm.model
+4.	./svm_classify senti_dev_svm.txt sentiment.svm.model sentiment75.out.svm
+5.	python3 postprocessing_svm_output.py sentiment75.out.svm sentiment
+6.	python3 postprocessing_f1score.py sentiment75.out.svm senti_develpmet.txt negative positive
+
+SENTIMENT ANALYSIS - MEGAM- 75/25 SPLIT
+1.	python3 convertdata-svm-megaM.py senti_training.txt senti_training_megaM.txt megaM
+2.	python3 convertdata-svm-megaM.py senti_develpmet.txt senti_dev_megaM.txt megaM
+3.	./megam_i686.opt -fvals binary senti_dev75_megaM.txt > sentiment.megam.model
+4.	./megam_i686.opt -fvals -predict sentiment.megam.model binary senti_dev75_megaM.txt > senti_75.out.megam
+5.	python3 postprocessing_megam_output.py senti_75.out.megam sentiment
+
+
+SPAM FILTERING - COMBINE FILES
+
+1. python3 preprocessor_combine_emailfiles.py EmailTraining.txt enron.vocab enron1 enron2 enron4 enron5
+
+
+TEST DATA
+
+NAIVE BAYES
+
+1.	python3 preprocessor_incrementfeature.py sentiment_test.feat 
+2.	python3 preprocessor_split_file.py labeledBow.feat 100 labeledBow.feat.preprocessed uselessoutput.txt sentiment
+3.	python3 nblearn.py labeledBow.feat.preprocessed sentiment.nb.model
+4.	python3 nbclassify.py sentiment.nb.model sentiment_test.feat
+
+
+SVM
+
+1.	python3 preprocessing-addlabels-testdata.py sentiment_test.feat
+2.	python3 preprocessor_split_file.py labeledBow.feat 100 labeledBow.feat.preprocessed uselessoutput.txt sentiment
+3.	python3 convertdata-svm-megaM.py labeledBow.feat.preprocessed labeledBow.feat.preprocessed.svm svm
+4.	python3 preprocessor_increasingorder_svm.py labeledBow.feat.preprocessed.svm
+5.	./svm_learn labeledBow.feat.preprocessed.svm sentiment.svm.model
+6.  ./svm_classify sentiment_test.feat sentiment.svm.model  sentiment.svm.out
+7.  python3 postprocessing_svm_output.py sentiment.svm.out sentiment
